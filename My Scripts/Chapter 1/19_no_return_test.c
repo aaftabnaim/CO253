@@ -18,21 +18,21 @@ This warning is enabled by default in C++ and by -Wall otherwise.
 */
 
 
-int kaushitha();
-int machang();
+int function1();
+int function2();
 
 int main(void){
 
-    kaushitha();
-    printf("Machang Gives %d \n", machang());
+    function1();
+    printf("function2 gives %d \n", function2());
 
     return 0;
 }
 
-int kaushitha(){
+int function1(){
     return 20;
 }
 
-int machang(){
+int function2(){
      
 }

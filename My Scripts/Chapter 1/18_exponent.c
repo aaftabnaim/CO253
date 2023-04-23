@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-float power(int , int ); // function prototype. parameter names need not correspond. 
+float power(int a, int b); // function prototype. parameter names need not correspond. 
                            // float power(int, int); also would have done the job
 int main(void){
     
