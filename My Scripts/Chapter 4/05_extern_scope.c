@@ -17,7 +17,8 @@ by automatic decleartion
 */
 
 extern float val = 0.5;
-val = 5;
+// val = 5; this behaves like a seperate declaration
+
 /*
 05_extern_scope.c:20:1: warning: data definition has no type or storage class
  val = 5;
@@ -27,7 +28,7 @@ val = 5;
 int main(){
 
     printf("%f", val);
-    val = 2.0;
+    //val = 2.0;
     testCase();
     return 0;
 }
@@ -38,7 +39,9 @@ if declared here the external variable is visible only  to the functions below i
 //extern int val = 10;
 
 
+
 void testCase(){
+    val = 10.0;
     printf("\ntestCase says %f", val);
 }
 
