@@ -1,5 +1,9 @@
 #include <stdio.h>
-
+/*
+On the other hand, if a variable or function is declared with the static keyword at the global scope,
+it will have internal linkage. This means that it can only be accessed within the same source file, 
+and it is not visible to other source files in the program.
+*/
 /* External variable declaration */
 int count;
 
