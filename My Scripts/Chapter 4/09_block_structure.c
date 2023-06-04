@@ -1,13 +1,12 @@
 #include <stdio.h>
 
-int x = 100;  // External variable x
+//int x = 100;  // External variable x
 
 void outerFunction() {
     // this variable takes a higher precedence inside the function
+    int x =-11;  // Variable x in the outer function 
 
-    int x = 10;  // Variable x in the outer function 
-
-    if (x > 0) {
+    if (x < 0) {
         int i;  // Declare a new i within the block
         for (i = 0; i < x; i++) {
             printf("Inner i: %d\n", i);

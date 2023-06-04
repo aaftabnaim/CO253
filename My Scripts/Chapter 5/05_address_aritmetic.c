@@ -41,7 +41,7 @@ int main() {
         // Print the stored characters
         printf("Characters in ptr1: ");
         for (int i = 0; i < 10; i++) {
-            printf("%c ", ptr1[i]);
+            printf("%c ", ptr1[i]); //because this is the same as *(ptr1+i)
         }
         printf("\n");
 
