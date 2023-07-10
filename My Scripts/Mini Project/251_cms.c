@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 
 // struct to store cpntacts
 typedef struct {
@@ -9,9 +9,8 @@ typedef struct {
     char email[30];
 } Contact;
 
-
 // Initializing all global variables here
-#define MAX_CONTACTS 100
+#define MAX_CONTACTS 1000
 int option;
 int numContacts;
 Contact contacts[MAX_CONTACTS];
@@ -50,7 +49,6 @@ int isSubString(const char* f, const char* l, int debug) {
     return 0;  
 }
 
-
  int strcmp(char *s, char *t) 
  { 
     //printf("%s %s", s, t);
@@ -65,26 +63,44 @@ void printDash(){
     printf("%s%s\n", dashLine, dashLine);
 }
 
+void print_header(){
+    printf("%-30s \t%-30s \t%-30s \t%-30s\n", "Name", "Phone", "Email", "Address");
+}
 
-int atoi(char s[]) 
+void pretty_print(char* name, int phone, char* email, char* address){
+    printf("%-30s \t%-30d \t%-30s \t%-30s\n", name, phone, email, address);
+}
+
+void clearTerminal() {
+    #ifdef _WIN32
+        system("cls"); 
+    #else
+        system("clear"); 
+    #endif
+}
+
+void hold(){
+    printf("Press Enter to Continue");
+    getchar();
+}
+
+int my_atoi(char s[]) 
  { 
  int i, n, sign; 
- for (i = 0; s[i]==' '; i++) /* skip white space */ 
+ for (i = 0; s[i]==' '; i++)
  ; 
  sign = (s[i] == '-') ? -1 : 1; 
- if (s[i] == '+' || s[i] == '-') /* skip sign */ 
+ if (s[i] == '+' || s[i] == '-') 
  i++; 
  for (n = 0; s[i]>='0' && s[i]<='9'; i++) 
  n = 10 * n + (s[i] - '0'); 
  return sign * n; 
  } 
 
-
 // Used before every scanf to clean the input buffer
 void cleanInputBuffer() {
     getchar();
 }
-
 
 // Prints the Home Screen UI
 void print_homeUI(){
@@ -149,9 +165,7 @@ void addNew(){
     printf("Contact added successfully.\n");
 }
 
-
 // Handles listing all the contacts available
-// TODO: Pretty print the list
 void listAll() {
     if (numContacts == 0) {
         printf("Contact list is empty.\n");
@@ -160,14 +174,13 @@ void listAll() {
 
     printf("Contact List:\n");
     printDash();
-    printf("Name\t\t\tPhone Number\t\t\tEmail\t\t\t\tAddress\n");
+    print_header();
     printDash();
     for (int i = 0; i < numContacts; i++) {
-        printf("%10s\t\t\t%d\t\t\t%s\t\t\t%s\n", contacts[i].name, contacts[i].phone, contacts[i].email, contacts[i].address);
+        pretty_print(contacts[i].name, contacts[i].phone, contacts[i].email, contacts[i].address);
     }
     printDash();
 }
-
 
 // Handles the contact search
 void searchContacts() {
@@ -183,20 +196,18 @@ void searchContacts() {
 
     printf("Search Results:\n");
     printDash();
-    printf("Name\t\tPhone Number\t\tAddress\t\tEmail\n");
+    print_header();
     printDash();
     for (int i = 0; i < numContacts; i++) {
-        if (isSubString(contacts[i].name, searchTerm, 0) == 1 || contacts[i].phone == atoi(searchTerm)) {
-            printf("%s\t\t%d\t\t%s\t\t%s\n", contacts[i].name, contacts[i].phone, contacts[i].address, contacts[i].email);
+        if (isSubString(contacts[i].name, searchTerm, 0) == 1 || contacts[i].phone == my_atoi(searchTerm)) {
+            pretty_print(contacts[i].name, contacts[i].phone, contacts[i].email, contacts[i].address);
         }
     }
     printDash();
 }
 
-
 //Handles deleting Contacts
-// TODO: When trying to delete a term it enters a stage where the search term is auto filled for some reason. Try and fix it
-void deleteContact() {
+void deleteEntry() {
     if (numContacts == 0) {
         printf("Contact list is empty.\n");
         return;
@@ -209,8 +220,8 @@ void deleteContact() {
 
     int found = 0;
     for (int i = 0; i < numContacts; i++) {
-        //printf("%d %d\n", contacts[i].phone, atoi(searchTerm));
-        if (strcmp(contacts[i].name, searchTerm) == 0 || contacts[i].phone == atoi(searchTerm)) {
+        //printf("%d %d\n", contacts[i].phone, my_atoi(searchTerm));
+        if (strcmp(contacts[i].name, searchTerm) == 0 || contacts[i].phone == my_atoi(searchTerm)) {
             found = 1;
             for (int j = i; j < numContacts - 1; j++) {
                 contacts[j] = contacts[j + 1];
@@ -226,11 +237,11 @@ void deleteContact() {
         printDash();
         printf("Did you mean?\n");
         printDash();
-        printf("Name\t\tPhone Number\t\tAddress\t\tEmail\n");
+        print_header();
         printDash();
         for (int i = 0; i < numContacts; i++) {
             if (isSubString(contacts[i].name, searchTerm, 0) == 1 || contacts[i].phone == atoi(searchTerm)) {
-                printf("%s\t\t%d\t\t%s\t\t%s\n", contacts[i].name, contacts[i].phone, contacts[i].address, contacts[i].email);
+                pretty_print(contacts[i].name, contacts[i].phone, contacts[i].address, contacts[i].email);
             }
     }        
     }
@@ -240,9 +251,12 @@ void deleteContact() {
 int main() {
     do {
         cleanInputBuffer();
+        clearTerminal();
+
         print_homeUI();
         //cleanInputBuffer();
         switch(option){
+            
             // Quit
             case 0:
                 exitHandler();
@@ -253,12 +267,15 @@ int main() {
                 break;
             case 2:
                 listAll();
+                hold();
                 break;
             case 3:
                 searchContacts();
+                hold();
                 break;
             case 4:
-                deleteContact();
+                deleteEntry();
+                hold();
                 break;
         }
     } while (option != 0);
